@@ -13,10 +13,10 @@ dist-ssr
 *.local
 
 # Base Url
-src/utils/baseUrl.js
+/src/utils/baseUrl.js
 
 # assets
-src/assets
+/src/assets/
 
 
 # Editor directories and files
