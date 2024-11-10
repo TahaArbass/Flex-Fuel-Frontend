@@ -13,7 +13,11 @@ dist-ssr
 *.local
 
 # Base Url
-/utils/baseUrl.js
+src/utils/baseUrl.js
+
+# assets
+src/assets
+
 
 # Editor directories and files
 .vscode/*
