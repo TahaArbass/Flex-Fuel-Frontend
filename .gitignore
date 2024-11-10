@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 
-# Base Url in the source folder 
+# Base Url
 /src/utils/baseUrl.js
 
 # assets in the source folder
