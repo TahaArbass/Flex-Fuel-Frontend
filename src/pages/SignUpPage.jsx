@@ -26,10 +26,11 @@ const SignUpPage = () => {
     // Validation schema 
     const validationSchema = Yup.object({
         // username with no spaces and only alphanumeric characters and no spaces
-        username: Yup.string().required('Required')
+        username: Yup.string()
             .min(3, 'Username must be at least 3 characters')
             .matches(/^\S*$/, 'Username should not contain spaces')
-            .matches(/^[a-zA-Z0-9]*$/, 'Username should not contain special characters like @, #, $, etc.'),
+            .matches(/^[a-zA-Z0-9]*$/, 'Username should not contain special characters like @, #, $, etc.')
+            .required('Required'),
         // email with valid email format
         email: Yup.string().email('Invalid email address').required('Required'),
         // password with no spaces and minimum 6 characters
