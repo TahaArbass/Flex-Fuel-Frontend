@@ -4,7 +4,7 @@ import FormComponent from '../components/forms/FormComponent';
 import * as Yup from 'yup';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import CustomCard from '../components/CustomCard';
+import CustomCard from '../components/cards/CustomCard';
 import { PersonAdd } from '@mui/icons-material';
 import bg from '../assets/bg.jpg';
 import { notifyError, notifySuccess } from '../utils/toastNotification';

@@ -1,35 +1,29 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, IconButton, Tabs, Tab, Menu, MenuItem, Box, Button, Drawer, List, ListItem, ListItemText, Divider } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    IconButton,
+    Tabs,
+    Tab,
+    Box,
+    Drawer,
+    List,
+    ListItem,
+    ListItemText,
+    Divider,
+} from "@mui/material";
 import DumbbellIcon from "@mui/icons-material/FitnessCenter";
-import MenuIcon from "@mui/icons-material/Menu"; // For the menu icon on mobile
-import { Link } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
 import ThemeToggleButton from "./buttons/ThemeToggleButton";
+import { Link } from "react-router-dom";
 
-const UserNavbar = () => {
-    const [selectedTab, setSelectedTab] = useState(0);
-    const [anchorEl, setAnchorEl] = useState(null);
+const UserNavbar = ({ menuItems }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const open = Boolean(anchorEl);
-
-    const handleTabChange = (event, newValue) => {
-        setSelectedTab(newValue);
-    };
-
-    const handleMenu = (event) => setAnchorEl(event.currentTarget);
-    const handleCloseMenu = () => setAnchorEl(null);
-
+    const [value, setValue] = useState(0);
     const toggleDrawer = (open) => () => {
         setDrawerOpen(open);
     };
-
-    const menuItems = [
-        { text: 'My Profile', path: '/profile' },
-        { text: 'Exercises', path: '/exercise' },
-        { text: 'GymBros', path: '/gymbros' },
-        { text: 'Friends', path: '/friends' },
-        { text: 'Logout', path: '/logout' }
-    ];
 
     return (
         <>
@@ -41,17 +35,28 @@ const UserNavbar = () => {
                     </Box>
                     <ThemeToggleButton />
 
-                    {/* Desktop navigation (Tabs) */}
+                    {/* Desktop navigation */}
                     <Tabs
-                        value={selectedTab}
-                        onChange={handleTabChange}
+                        value={value}
                         textColor="inherit"
-                        indicatorColor="primary"
-                        sx={{ display: { xs: "none", sm: "inline-flex" } }}
+                        sx={{
+                            display: { xs: "none", sm: "inline-flex" },
+                            "& .MuiTabs-indicator": { backgroundColor: "white" },
+                        }}
                     >
-                        <Tab label="Exercise" sx={{ fontSize: '1.2rem' }} />
-                        <Tab label="GymBros" sx={{ fontSize: '1.2rem' }} />
-                        <Tab label="My Profile" sx={{ fontSize: '1.2rem' }} />
+                        {menuItems.map((item, index) => (
+                            <Tab
+                                key={index}
+                                label={item.text}
+                                component={Link}
+                                to={item.path}
+                                sx={{
+                                    fontSize: "1.1rem",
+                                    ":hover": { color: "#20B2AA" },
+                                }}
+                                onClick={() => { setValue(index) }}
+                            />
+                        ))}
                     </Tabs>
 
                     {/* Mobile menu icon */}
@@ -59,7 +64,7 @@ const UserNavbar = () => {
                         color="inherit"
                         edge="end"
                         onClick={toggleDrawer(true)}
-                        sx={{ display: { xs: 'inline', sm: 'none' } }}
+                        sx={{ display: { xs: "inline", sm: "none" } }}
                         aria-label="menu"
                     >
                         <MenuIcon />
@@ -71,19 +76,18 @@ const UserNavbar = () => {
             <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
                 <List sx={{ width: 250 }}>
                     {menuItems.map((item) => (
-                        <ListItem key={item.text} component={Link} to={item.path} onClick={toggleDrawer(false)}>
+                        <ListItem
+                            key={item.text}
+                            component={Link}
+                            to={item.path}
+                            onClick={toggleDrawer(false)}
+                        >
                             <ListItemText primary={item.text} />
                             <Divider />
                         </ListItem>
                     ))}
                 </List>
             </Drawer>
-
-            {/* Menu for profile and logout */}
-            <Menu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
-                <MenuItem onClick={() => alert("Edit Profile")}>Edit Profile</MenuItem>
-                <MenuItem onClick={() => alert("Logout")}>Logout</MenuItem>
-            </Menu>
         </>
     );
 };

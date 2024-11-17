@@ -5,15 +5,20 @@ import FormComponent from '../components/forms/FormComponent';
 import * as Yup from 'yup';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import CustomCard from '../components/CustomCard';
+import CustomCard from '../components/cards/CustomCard';
 import { LockOpen } from '@mui/icons-material';
 import bg from '../assets/bg.jpg';
 import { notifyError, notifySuccess } from '../utils/toastNotification';
 import UserService from '../services/user.service';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage = () => {
+    const { login } = useAuth(); // for setting the token in the context
+    const location = useLocation(); // for redirecting after login if user was redirected to login page
     const navigate = useNavigate();
+
+    // my fields for the form
     const fields = [
         { name: 'email', label: 'Email', type: 'email' },
         { name: 'password', label: 'Password', type: 'password' },
@@ -21,6 +26,7 @@ const LoginPage = () => {
 
     const initialValues = { email: '', password: '' };
 
+    // login form validation schema
     const validationSchema = Yup.object({
         email: Yup.string().email('Invalid email address').required('Required'),
         password: Yup.string()
@@ -29,12 +35,17 @@ const LoginPage = () => {
             .required('Required'),
     });
 
+    // login form submission
     const onSubmit = async (values) => {
         try {
             const { email, password } = values;
             const result = await UserService.login(email, password);
             if (result.status === 200) {
+                login(result.data.token, result.data.user);
                 notifySuccess('Login successful');
+                const next = new URLSearchParams(location.search).get('next');
+                const redirectPath = next ? next : '/exercises';
+                navigate(redirectPath); // redirect to the next path if user was redirected to login page
             }
         }
         catch (error) {

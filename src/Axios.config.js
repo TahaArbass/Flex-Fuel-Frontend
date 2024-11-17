@@ -1,7 +1,8 @@
 import axios from "axios";
 import BaseUrl from "./utils/baseUrl";
+import { notifyError } from "./utils/toastNotification";
 
-export default axios.create({
+const Axios = axios.create({
     baseURL: BaseUrl, // Fixed base URL
     headers: {
         "Content-Type": "application/json" // Fixed content type
@@ -9,16 +10,18 @@ export default axios.create({
 });
 
 // Request Interceptor to add the token to the request
-axios.interceptors.request.use(
+Axios.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("token");
-        // If the token exists, add it to the Authorization header
+        const token = localStorage.getItem("authToken");
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
     (error) => {
+        notifyError(error.message);
         return Promise.reject(error);
     }
 );
+
+export default Axios;

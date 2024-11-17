@@ -5,7 +5,10 @@ import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 
 const Footer = () => {
     return (
-        <Box sx={{ bgcolor: 'primary.main', color: 'white', padding: 2, textAlign: 'center' }}>
+        <Box component={"footer"} sx={{
+            bgcolor: 'primary.main', color: 'white', padding: 2, textAlign: 'center',
+            width: '100%', // Spans the entire width of the viewport
+        }}>
             <Typography variant="h6">© 2024 FlexFuel. All rights reserved.</Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                 <IconButton

@@ -66,7 +66,7 @@ const Navbar = () => {
             <Drawer anchor="right" open={drawerOpen} onClose={() => toggleDrawer(false)}>
                 <List sx={{ width: 250 }}>
                     {menuItems.map((item) => (
-                        <ListItem button key={item.text} component={Link} to={item.path} onClick={() => toggleDrawer(false)}>
+                        <ListItem key={item.text} component={Link} to={item.path} onClick={() => toggleDrawer(false)}>
                             <ListItemText primary={item.text} />
                         </ListItem>
                     ))}
