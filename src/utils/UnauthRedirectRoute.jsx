@@ -6,7 +6,7 @@ const UnauthRedirectRoute = ({ element }) => {
     const { auth } = useAuth();
     const location = useLocation();
 
-    if (auth.loggedIn) {
+    if (auth?.loggedIn) {
         // Redirect to a default authenticated route
         return <Navigate to="/exercises" state={{ from: location }} replace />;
     }

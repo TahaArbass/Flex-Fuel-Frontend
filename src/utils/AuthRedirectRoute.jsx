@@ -3,11 +3,13 @@ import { Navigate, useLocation } from 'react-router-dom';
 import MuscleGroupService from '../services/muscleGroup.service';
 import { notifyError } from './toastNotification';
 import PrivateLayout from '../components/layouts/privateLayout';
+import { useAuth } from '../contexts/AuthContext';
 
 const AuthRedirectRoute = ({ element }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null); // `null` means loading
     const location = useLocation(); // Access current location to store `next`
 
+    const { logout } = useAuth();
     useEffect(() => {
         const checkAuth = async () => {
             try {
@@ -17,6 +19,7 @@ const AuthRedirectRoute = ({ element }) => {
             } catch (error) {
                 if (error.response?.status === 401) {
                     notifyError(error?.response?.data?.message || 'Unauthorized. Please login to continue');
+                    logout();
                     setIsAuthenticated(false);
                 }
             }

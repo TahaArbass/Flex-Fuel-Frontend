@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Avatar, Grid, CircularProgress } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import UserService from '../../services/user.service';
+import LogoutButton from '../buttons/LogoutButton';
 
 const Profile = ({ profileUsername }) => {
     const [userProfile, setUserProfile] = useState(null);
@@ -94,9 +95,12 @@ const Profile = ({ profileUsername }) => {
             {/* Action Button */}
             <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
                 {isOwnProfile ? (
-                    <Button variant="contained" color="primary" onClick={handleEditProfile} sx={{ width: 200 }}>
-                        Edit Profile
-                    </Button>
+                    <>
+                        <Button variant="contained" color="primary" onClick={handleEditProfile} sx={{ width: 200 }}>
+                            Edit Profile
+                        </Button>
+                        <LogoutButton />
+                    </>
                 ) : (
                     <Button variant="outlined" color="primary" onClick={handleFollow} sx={{ width: 200 }}>
                         Follow
