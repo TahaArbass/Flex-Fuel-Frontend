@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const MuscleGroupCard = React.memo(({ muscle }) => (
     <Card
         component={Link}
-        to={`/exercises/${muscle.muscle_group_name}`}
+        to={`/exercises?muscle-group=${muscle.muscle_group_name}`}
         sx={{
             position: "relative",
             overflow: "hidden",

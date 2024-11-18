@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Typography, Grid, Box } from "@mui/material";
 import MuscleGroupService from "../../services/muscleGroup.service";
-import TabsWithPanels from "../TabsWithPanels";
 import MuscleGroupCard from "../cards/MuscleGroupCard";
 import { notifyError } from "../../utils/toastNotification";
 import ExerciseList from "./ExerciseList";

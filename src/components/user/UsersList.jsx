@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Box, Typography, List, ListItem, ListItemAvatar, Avatar, Pagination } from '@mui/material';
+import { TextField, Box, Typography, List, ListItem, ListItemAvatar, Avatar, Pagination, Paper } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext'; // Assuming you have this context to get the current user
 import UserService from '../../services/user.service'; // Assuming a service for fetching users
 import { notifyError } from '../../utils/toastNotification';
@@ -55,38 +55,39 @@ const UserList = () => {
     const totalPages = Math.ceil(filteredUsers.length / usersPerPage); // Total number of pages
 
     return (
-        <Box sx={{ maxWidth: '600px', margin: 'auto', padding: '20px' }}>
-            {/* Search Bar */}
-            <TextField
-                label="Search Users"
-                variant="outlined"
-                fullWidth
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                sx={{ marginBottom: 2 }}
-            />
+        <Box sx={{ maxWidth: '100%', margin: 'auto', padding: 4 }}>
+            <Paper elevation={3} sx={{ padding: 2, marginBottom: 2, width: { xs: '90%', md: '70%' } }}>
+                {/* Search Bar */}
+                <TextField
+                    label="Search Users"
+                    variant="outlined"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    sx={{ marginBottom: 2, width: '30%' }}
+                />
 
-            {/* User List */}
-            <List>
-                {paginatedUsers.map((user) => (
-                    <ListItem key={user.id} onClick={() => navigate(`/profile/${user.username}`)}>
-                        <ListItemAvatar>
-                            <Avatar alt={user.username} src={user.profilePictureUrl} />
-                        </ListItemAvatar>
-                        <Typography>{user.username}</Typography>
-                    </ListItem>
-                ))}
-            </List>
+                {/* User List */}
+                <List>
+                    {paginatedUsers.map((user) => (
+                        <ListItem key={user.id} onClick={() => navigate(`/profile/${user.username}`)}>
+                            <ListItemAvatar>
+                                <Avatar alt={user.username} src={user.profilePictureUrl} />
+                            </ListItemAvatar>
+                            <Typography>{user.username}</Typography>
+                        </ListItem>
+                    ))}
+                </List>
 
-            {/* Pagination */}
-            <Pagination
-                count={totalPages}
-                page={page}
-                onChange={(e, value) => setPage(value)}
-                variant="outlined"
-                shape="rounded"
-                sx={{ marginTop: 2 }}
-            />
+                {/* Pagination */}
+                <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={(e, value) => setPage(value)}
+                    variant="outlined"
+                    shape="rounded"
+                    sx={{ marginTop: 2 }}
+                />
+            </Paper>
         </Box>
     );
 };

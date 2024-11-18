@@ -19,6 +19,7 @@ const LogoutButton = () => {
         <Button
             variant="contained"
             color="secondary"
+            size='large'
             onClick={handleLogout}
         >
             Logout
