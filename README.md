@@ -40,7 +40,7 @@ The following technologies power Flex Fuel:
 - [Vite](https://vitejs.dev/) - Fast build tool
 - [Axios](https://axios-http.com/) - HTTP client for API communication
 - [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/) - Backend framework
-- [MySQL](https://www.mysql.com/) - Database for storing user and exercise data
+- [Postgres](https://www.postgresql.org/) - Relational database for storing data
 
 ---
 
