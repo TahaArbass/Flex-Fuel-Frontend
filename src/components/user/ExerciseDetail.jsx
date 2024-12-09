@@ -33,13 +33,12 @@ const ExerciseDetail = ({ exerciseId }) => {
         return <Typography>Loading...</Typography>;
     }
 
-    // Handle video play/pause on click
-    const handleVideoClick = () => {
-        if (videoRef.current.paused) {
-            videoRef.current.play();  // Play the video
-        } else {
-            videoRef.current.pause();  // Pause the video
-        }
+    const youtubeEmbedUrl = (url) => {
+        if (!url) return '';
+        // Use the stored video ID to construct the embed URL
+        const videoId = url.split("v=")[1]?.split("&")[0] || url.split("youtu.be/")[1];
+        return `https://www.youtube.com/embed/${videoId}`;
+        // return `https://www.youtube.com/embed/K_7K7v2KGYU`;
     };
 
     return (
@@ -58,19 +57,57 @@ const ExerciseDetail = ({ exerciseId }) => {
                 {/* Left Section (Media Card) */}
                 <Grid item xs={12} md={4}>
                     <Card>
-                        <CardMedia
-                            component={showVideo ? 'video' : 'img'}
-                            src={showVideo ? exercise?.video_url : exercise?.photo_url}
-                            alt={exercise?.exercise_name}
-                            controls={showVideo}
-                            ref={videoRef}
-                            onClick={handleVideoClick}
+                        <Box
                             sx={{
-                                height: 300,
-                                objectFit: 'contain', // Ensures the entire image is visible
-                                width: '100%', // Ensures it scales with the container
+                                position: "relative",
+                                paddingTop: "56.25%" // 16:9 Aspect Ratio
                             }}
-                        />
+                        >
+                            {showVideo ? (
+                                exercise?.video_url ? ( // Check if video_url exists
+                                    <iframe
+                                        src={youtubeEmbedUrl(exercise?.video_url)}
+                                        title={exercise?.exercise_name}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            width: "100%",
+                                            height: "100%",
+                                        }}
+                                    />
+                                ) : (
+                                    <Typography
+                                        variant="h6"
+                                        color="textSecondary"
+                                        sx={{
+                                            position: "absolute",
+                                            top: "50%",
+                                            left: "50%",
+                                            transform: "translate(-50%, -50%)",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        No video available
+                                    </Typography>
+                                )
+                            ) : (
+                                <img
+                                    src={exercise?.photo_url}
+                                    alt={exercise?.exercise_name}
+                                    style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "contain",
+                                    }}
+                                />
+                            )}
+                        </Box>
                         <CardContent>
                             <Button
                                 variant="contained"

@@ -12,6 +12,8 @@ import ExercisesPage from './pages/DisplayExercisesPage';
 import ExerciseInfoPage from './pages/ExerciseInfoPage';
 import ProfilePage from './pages/ProfilePage';
 import UserList from './components/user/UsersList';
+import ExerciseFormComponent from './components/forms/ExerciseFormComponent';
+import TestingSockets from './pages/testingSockets';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
             <Route path='/exercises/:exerciseId' element={<AuthRedirectRoute element={<ExerciseInfoPage />} />} />
             <Route path='/profile/:username' element={<AuthRedirectRoute element={<ProfilePage />} />} />
             <Route path='/gymbros' element={<AuthRedirectRoute element={<UserList />} />} />
+            <Route path='/exerciseform' element={<AuthRedirectRoute element={<ExerciseFormComponent />} />} />
+            <Route path='/socket' element={<AuthRedirectRoute element={<TestingSockets />} />} />
           </Routes>
         </Router >
       </AuthProvider>
