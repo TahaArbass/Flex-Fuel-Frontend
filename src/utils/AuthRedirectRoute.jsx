@@ -4,6 +4,8 @@ import MuscleGroupService from '../services/muscleGroup.service';
 import { notifyError } from './toastNotification';
 import PrivateLayout from '../components/layouts/privateLayout';
 import { useAuth } from '../contexts/AuthContext';
+import SocketProvider from '../contexts/SocketProvider';
+import { CircularProgress } from '@mui/material';
 
 const AuthRedirectRoute = ({ element }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null); // `null` means loading
@@ -21,6 +23,9 @@ const AuthRedirectRoute = ({ element }) => {
                     notifyError(error?.response?.data?.message || 'Unauthorized. Please login to continue');
                     logout();
                     setIsAuthenticated(false);
+                } else {
+                    notifyError('An unexpected error occurred. Please try again later.');
+                    console.error('Auth check error:', error);
                 }
             }
         };
@@ -30,16 +35,19 @@ const AuthRedirectRoute = ({ element }) => {
 
     // Show loading spinner or fallback while checking
     if (isAuthenticated === null) {
-        return <div>Loading...</div>; // Replace with your loading component
+        // return <div>Loading...</div>; // Replace with your loading component
+        return <CircularProgress />;
     }
 
     // If user is authenticated, show the requested element
     if (isAuthenticated) {
         return (
             <>
-                <PrivateLayout>
-                    {element}
-                </PrivateLayout>
+                <SocketProvider>
+                    <PrivateLayout>
+                        {element}
+                    </PrivateLayout>
+                </SocketProvider>
             </>
         )
     }

@@ -2,8 +2,9 @@ import axios from "axios";
 import BaseUrl from "./utils/baseUrl";
 import { notifyError } from "./utils/toastNotification";
 
+const API_URL = BaseUrl + '/api';
 const Axios = axios.create({
-    baseURL: BaseUrl, // Fixed base URL
+    baseURL: API_URL, // Fixed base URL
     headers: {
         "Content-Type": "application/json" // Fixed content type
     }

@@ -39,11 +39,21 @@ const Profile = ({ profileUsername }) => {
         alert('Follow button clicked!');
     };
 
+
+    // Handle message button
+    const handleMessage = () => {
+        alert('Message button clicked!');
+
+        // here i should do to start the process of texting
+    };
+
+
     // Handle edit button
     const handleEditProfile = () => {
         alert('Edit profile button clicked!');
     };
 
+    // Loading state
     if (!userProfile) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -105,9 +115,16 @@ const Profile = ({ profileUsername }) => {
                             </Box>
                         </>
                     ) : (
-                        <Button variant="outlined" color="primary" onClick={handleFollow} sx={{ width: 200 }}>
-                            Follow
-                        </Button>
+                        <>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+                                <Button size='large' variant="contained" color="primary" onClick={handleMessage} sx={{ width: 200 }}>
+                                    Message
+                                </Button>
+                                <Button size='large' variant="contained" color="primary" onClick={handleFollow} sx={{ width: 200 }}>
+                                    Follow
+                                </Button>
+                            </Box>
+                        </>
                     )}
                 </Box>
             </Paper>

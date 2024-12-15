@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
-import { Navigate, redirect } from "react-router-dom";
 
+// auth context for user authentication
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

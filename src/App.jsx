@@ -14,6 +14,8 @@ import ProfilePage from './pages/ProfilePage';
 import UserList from './components/user/UsersList';
 import ExerciseFormComponent from './components/forms/ExerciseFormComponent';
 import TestingSockets from './pages/testingSockets';
+// import Chat from './pages/testingSockets';
+import PlaygroundForMe from './pages/PlaygoundForMe';
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
             <Route path='/gymbros' element={<AuthRedirectRoute element={<UserList />} />} />
             <Route path='/exerciseform' element={<AuthRedirectRoute element={<ExerciseFormComponent />} />} />
             <Route path='/socket' element={<AuthRedirectRoute element={<TestingSockets />} />} />
+            <Route path='/playground' element={<AuthRedirectRoute element={<PlaygroundForMe />} />} />
           </Routes>
         </Router >
       </AuthProvider>
