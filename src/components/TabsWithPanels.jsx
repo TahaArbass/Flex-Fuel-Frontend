@@ -7,6 +7,7 @@ const TabsWithPanels = () => {
     const menuItems = [
         { text: "Exercises", path: "/exercises" },
         { text: "GymBros", path: "/gymbros" },
+        { text: "Meals", path: "/meals" },
         { text: "My Profile", path: "/profile/" + auth.user.username },
     ];
 

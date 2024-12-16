@@ -16,6 +16,8 @@ import ExerciseFormComponent from './components/forms/ExerciseFormComponent';
 import TestingSockets from './pages/ChatPage';
 import ChatPage from './pages/ChatPage';
 import PlaygroundForMe from './pages/PlaygoundForMe';
+import MealsPage from './pages/MealsPage';
+import MealInfoPage from './pages/MealInfoPage';
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
             <Route path='/socket' element={<AuthRedirectRoute element={<TestingSockets />} />} />
             <Route path='/playground' element={<AuthRedirectRoute element={<PlaygroundForMe />} />} />
             <Route path='/chat' element={<AuthRedirectRoute element={<ChatPage />} />} />
+            <Route path='/meals' element={<AuthRedirectRoute element={<MealsPage />} />} />
+            <Route path='/meals/:mealId' element={<AuthRedirectRoute element={<MealInfoPage />} />} />
           </Routes>
         </Router >
       </AuthProvider>

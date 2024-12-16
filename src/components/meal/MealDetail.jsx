@@ -1,54 +1,50 @@
-import React, { useState, useEffect, useRef } from 'react';
-import MuscleService from '../../services/muscle.service'; // Fetch muscle by ID
-import ExerciseService from '../../services/exercise.service'; // Fetch exercise by ID
-import { Box, Typography, Button, Card, CardContent, Grid, Divider } from '@mui/material';
-import { notifyError } from '../../utils/toastNotification';
+import React, { useState, useEffect } from "react";
+import MealService from "../../services/meal.service";
+import { Box, Typography, Button, Card, CardContent, Grid, Divider } from "@mui/material";
+import { notifyError } from "../../utils/toastNotification";
 
-const ExerciseDetail = ({ exerciseId }) => {
-    const [exercise, setExercise] = useState(null);
-    const [muscle, setMuscle] = useState(null);
+const MealDetail = ({ mealId }) => {
+
+    const [meal, setMeal] = useState(null);
     const [showVideo, setShowVideo] = useState(false);
-    const videoRef = useRef(null);  // Reference for the video element
-    // Fetch the exercise data
-    useEffect(() => {
-        const fetchExerciseData = async () => {
-            try {
-                const exerciseResponse = await ExerciseService.getById(exerciseId);
-                setExercise(exerciseResponse.data);
 
-                const muscleResponse = await MuscleService.getById(exerciseResponse.data.targeted_muscle_id);
-                setMuscle(muscleResponse.data);
+    // Fetch the meal data
+    useEffect(() => {
+        const fetchMealData = async () => {
+            try {
+                console.log("mealId", mealId);
+                const mealResponse = await MealService.getMealById(mealId);
+                setMeal(mealResponse.data);
             } catch (error) {
-                notifyError(error?.response?.data?.error?.message || 'Failed to fetch exercise data');
+                notifyError(error?.response?.data?.error?.message || "Failed to fetch meal data");
             }
         };
 
-        if (exerciseId) {
-            fetchExerciseData();
+        if (mealId) {
+            fetchMealData();
         }
-    }, [exerciseId]); // Added exerciseId as a dependency
+    }, [mealId]); // Added mealId as a dependency
 
-    if (!exercise || !muscle) {
+    if (!meal) {
         return <Typography>Loading...</Typography>;
     }
 
     const youtubeEmbedUrl = (url) => {
-        if (!url) return '';
-        // Use the stored video ID to construct the embed URL
+        if (!url) return "";
+        // Extract video ID and construct embed URL
         const videoId = url.split("v=")[1]?.split("&")[0] || url.split("youtu.be/")[1];
         return `https://www.youtube.com/embed/${videoId}`;
-        // return `https://www.youtube.com/embed/K_7K7v2KGYU`;
     };
 
     return (
         <Box sx={{ padding: 6 }}>
             {/* Header */}
             <Typography gutterBottom variant="h4">
-                {exercise?.exercise_name}
+                {meal?.name}
             </Typography>
             <Divider sx={{ marginBottom: 2 }} />
             <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                Targeted Muscle: {muscle?.muscle_name}
+                Category: {meal?.category}
             </Typography>
 
             {/* Layout Container */}
@@ -59,14 +55,14 @@ const ExerciseDetail = ({ exerciseId }) => {
                         <Box
                             sx={{
                                 position: "relative",
-                                paddingTop: "56.25%" // 16:9 Aspect Ratio
+                                paddingTop: "56.25%", // 16:9 Aspect Ratio
                             }}
                         >
                             {showVideo ? (
-                                exercise?.video_url ? ( // Check if video_url exists
+                                meal?.video_url ? ( // Check if video_url exists
                                     <iframe
-                                        src={youtubeEmbedUrl(exercise?.video_url)}
-                                        title={exercise?.exercise_name}
+                                        src={youtubeEmbedUrl(meal?.video_url)}
+                                        title={meal?.name}
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
                                         style={{
@@ -94,8 +90,8 @@ const ExerciseDetail = ({ exerciseId }) => {
                                 )
                             ) : (
                                 <img
-                                    src={exercise?.photo_url}
-                                    alt={exercise?.exercise_name}
+                                    src={meal?.photo_url || "/placeholder.jpg"}
+                                    alt={meal?.name}
                                     style={{
                                         position: "absolute",
                                         top: 0,
@@ -114,7 +110,7 @@ const ExerciseDetail = ({ exerciseId }) => {
                                 fullWidth
                                 onClick={() => setShowVideo(!showVideo)}
                             >
-                                {showVideo ? 'Show Image' : 'Watch Video'}
+                                {showVideo ? "Show Image" : "Watch Video"}
                             </Button>
                         </CardContent>
                     </Card>
@@ -127,13 +123,23 @@ const ExerciseDetail = ({ exerciseId }) => {
                             Description:
                         </Typography>
                         <Typography variant="h6" sx={{ marginBottom: 2 }}>
-                            {exercise?.exercise_description}
+                            {meal?.description}
                         </Typography>
                         <Typography variant="h5" sx={{ marginBottom: 1 }}>
+                            Ingredients:
+                        </Typography>
+                        <Box component="ul" sx={{ paddingLeft: 2 }}>
+                            {meal?.ingredients?.split(", ").map((ingredient, index) => (
+                                <Typography key={index} component="li" variant="h6">
+                                    {ingredient}
+                                </Typography>
+                            ))}
+                        </Box>
+                        <Typography variant="h5" sx={{ marginTop: 2, marginBottom: 1 }}>
                             Steps:
                         </Typography>
                         <Box component="ul" sx={{ paddingLeft: 2 }}>
-                            {exercise?.exercise_steps?.split('. ').map((step, index) => (
+                            {meal?.steps?.split(". ").map((step, index) => (
                                 <Typography key={index} component="li" variant="h6">
                                     {step}
                                 </Typography>
@@ -146,4 +152,4 @@ const ExerciseDetail = ({ exerciseId }) => {
     );
 };
 
-export default ExerciseDetail;
+export default MealDetail;
