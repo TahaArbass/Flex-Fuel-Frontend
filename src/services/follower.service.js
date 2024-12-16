@@ -35,6 +35,14 @@ const deleteFollower = (id) => {
     return http.delete(`/followers/${id}`);
 };
 
+const isFollowing = (followerId, followingId) => {
+    return http.get(`/followers/isFollowing/${followerId}/${followingId}`);
+};
+
+const getFollowersInfo = (followerId) => {
+    return http.get(`/followers/followersInfo/${followerId}`);
+};
+
 const FollowerService = {
     getAllFollowers,
     getFollowerById,
@@ -43,6 +51,8 @@ const FollowerService = {
     createFollower,
     updateFollower,
     deleteFollower,
+    isFollowing,
+    getFollowersInfo
 };
 
 export default FollowerService;

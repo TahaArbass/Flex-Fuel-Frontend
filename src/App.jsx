@@ -11,10 +11,10 @@ import AuthRedirectRoute from './utils/AuthRedirectRoute';
 import ExercisesPage from './pages/DisplayExercisesPage';
 import ExerciseInfoPage from './pages/ExerciseInfoPage';
 import ProfilePage from './pages/ProfilePage';
-import UserList from './components/user/UsersList';
+import GymbrosPage from './pages/GymbrosPage';
 import ExerciseFormComponent from './components/forms/ExerciseFormComponent';
-import TestingSockets from './pages/testingSockets';
-// import Chat from './pages/testingSockets';
+import TestingSockets from './pages/ChatPage';
+import ChatPage from './pages/ChatPage';
 import PlaygroundForMe from './pages/PlaygoundForMe';
 
 function App() {
@@ -31,10 +31,11 @@ function App() {
             <Route path='/exercises' element={<AuthRedirectRoute element={<ExercisesPage />} />} />
             <Route path='/exercises/:exerciseId' element={<AuthRedirectRoute element={<ExerciseInfoPage />} />} />
             <Route path='/profile/:username' element={<AuthRedirectRoute element={<ProfilePage />} />} />
-            <Route path='/gymbros' element={<AuthRedirectRoute element={<UserList />} />} />
+            <Route path='/gymbros' element={<AuthRedirectRoute element={<GymbrosPage />} />} />
             <Route path='/exerciseform' element={<AuthRedirectRoute element={<ExerciseFormComponent />} />} />
             <Route path='/socket' element={<AuthRedirectRoute element={<TestingSockets />} />} />
             <Route path='/playground' element={<AuthRedirectRoute element={<PlaygroundForMe />} />} />
+            <Route path='/chat' element={<AuthRedirectRoute element={<ChatPage />} />} />
           </Routes>
         </Router >
       </AuthProvider>

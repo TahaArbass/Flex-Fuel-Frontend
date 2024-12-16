@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import BaseUrl from "../utils/baseUrl";
 import { useAuth } from "./AuthContext";
+
 const SocketContext = React.createContext();
 
 const ChatSocketProvider = ({ children }) => {
@@ -44,8 +45,6 @@ const ChatSocketProvider = ({ children }) => {
 
         // Listen for incoming messages
         chatSocket.current.on("receiveMessage", (data) => {
-            console.log("Message received: " + data.user + '/ message:' + data.message);
-            alert("Message received: " + data.user + '/ message:' + data.message);
             setMessages((prev) => [...prev, data]);
         });
 
@@ -66,35 +65,34 @@ const ChatSocketProvider = ({ children }) => {
             setIsConnected(true);
         });
 
-        // on connect
+        // On connect
         chatSocket.current.on("connect", () => {
             console.log("Connected to chat socket!");
             setIsConnected(true);
         });
 
-        // on disconnect
+        // On disconnect
         chatSocket.current.on("disconnect", () => {
             console.log("Disconnected from chat socket!");
             setIsConnected(false);
         });
-
 
         // Cleanup listeners on unmount
         return () => cleanUpListeners(chatSocket.current);
     }, [chatSocket]);
 
     // Send a message
-    const sendMessage = (user, chat_id, message) => {
+    const sendMessage = (recipientId, message) => {
         if (!message.trim()) return;
-        const data = { user, chat_id, message };
+        const data = { recipientId, message };
         console.log("Data: ", data);
         chatSocket.current.emit("sendMessage", data);
-        setMessages((prev) => [...prev, { user, text: message }]); // Add locally sent message to state
+        setMessages((prev) => [...prev, { user: auth.user.id, message: message }]); // Add locally sent message to state
         setMessage(""); // Clear input
     };
 
     // Handle typing indicator
-    const handleTyping = (user, recipient, isTyping) => {
+    const handleTyping = (recipientId, isTyping) => {
         if (!chatSocket.current) return;
 
         // Clear the previous timeout if the user is typing quickly
@@ -104,15 +102,14 @@ const ChatSocketProvider = ({ children }) => {
 
         // Emit typing event with a debounce delay
         typingTimeoutRef.current = setTimeout(() => {
-            chatSocket.current.emit(isTyping ? "typing" : "stopTyping", { user, recipient });
+            chatSocket.current.emit(isTyping ? "typing" : "stopTyping", { recipientId });
         }, 500); // 500ms debounce time
     };
 
-    // join a chat room
-    const joinChatRoom = (chat_id) => {
-        chatSocket.current.emit("join", { chat_id });
+    // Join a chat room (no need for `chat_id` since it is derived by the backend)
+    const joinChatRoom = (recipientId) => {
+        chatSocket.current.emit("join", { recipientId });
     };
-
 
     // Provide the chat socket context for children components
     return (

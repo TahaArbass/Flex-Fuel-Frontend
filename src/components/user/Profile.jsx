@@ -4,14 +4,17 @@ import { Box, Typography, Button, Avatar, Grid, CircularProgress, Paper } from '
 import { useAuth } from '../../contexts/AuthContext';
 import UserService from '../../services/user.service';
 import LogoutButton from '../buttons/LogoutButton';
-
+import FollowerService from '../../services/follower.service';
+import { notifyError } from '../../utils/toastNotification';
+import { useNavigate } from 'react-router-dom';
 const Profile = ({ profileUsername }) => {
     const [userProfile, setUserProfile] = useState(null);
     const [isOwnProfile, setIsOwnProfile] = useState(false);
-
+    const [isFollowing, setIsFollowing] = useState(false);
     // Get the logged-in user's info from context
     const { auth } = useAuth();
     const currentUser = auth.user;
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch profile data here (replace with your API call)
@@ -24,8 +27,12 @@ const Profile = ({ profileUsername }) => {
                 if (data.id === currentUser.id) {
                     setIsOwnProfile(true);
                 }
+
+                // Check if the current user is following the profile user
+                const isFollowingResponse = await FollowerService.isFollowing(currentUser.id, data.id);
+                setIsFollowing(isFollowingResponse.data?.isFollowing);
             } catch (error) {
-                console.error('Error fetching profile:', error);
+                notifyError(error?.response?.data?.error?.message || 'Failed to fetch user profile');
             }
         };
 
@@ -35,8 +42,16 @@ const Profile = ({ profileUsername }) => {
     }, [profileUsername, currentUser.id]);
 
     // Handle follow button
-    const handleFollow = () => {
-        alert('Follow button clicked!');
+    const handleFollow = async () => {
+        // follow the user
+        try {
+            // check if he is already following the user
+            const response = await FollowerService.isFollowing(currentUser.id, userProfile.id);
+            FollowerService.createFollower({ follower_id: currentUser.id, following_id: userProfile.id });
+        }
+        catch (error) {
+            notifyError(error?.response?.data?.error?.message || 'Failed to follow user');
+        }
     };
 
 
@@ -44,7 +59,8 @@ const Profile = ({ profileUsername }) => {
     const handleMessage = () => {
         alert('Message button clicked!');
 
-        // here i should do to start the process of texting
+        navigate(`/chat`, { state: { userProfile } });
+
     };
 
 
@@ -120,8 +136,9 @@ const Profile = ({ profileUsername }) => {
                                 <Button size='large' variant="contained" color="primary" onClick={handleMessage} sx={{ width: 200 }}>
                                     Message
                                 </Button>
-                                <Button size='large' variant="contained" color="primary" onClick={handleFollow} sx={{ width: 200 }}>
-                                    Follow
+                                <Button size='large' variant="contained" color="primary" onClick={handleFollow} disabled={isFollowing}
+                                    sx={{ width: 200 }}>
+                                    {isFollowing ? 'Following' : 'Follow'}
                                 </Button>
                             </Box>
                         </>
