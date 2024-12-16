@@ -57,10 +57,7 @@ const Profile = ({ profileUsername }) => {
 
     // Handle message button
     const handleMessage = () => {
-        alert('Message button clicked!');
-
         navigate(`/chat`, { state: { userProfile } });
-
     };
 
 

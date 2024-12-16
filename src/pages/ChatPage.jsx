@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Typography, TextField, Button, Paper, Grid } from '@mui/material';
 import { useChatSocket } from '../contexts/ChatSocketContext';
@@ -6,6 +6,13 @@ import FollowersList from '../components/user/FollowersList';
 import { keyframes } from '@mui/system';
 
 
+/** Chat page component 
+ * 
+ * This component displays the chat messages between the logged-in user and the selected user.
+ * It also displays a typing indicator when the selected user is typing a message.
+ * 
+ * The user profile is passed to this component via the location state.
+ */
 
 const ChatPage = () => {
     const typingDots = keyframes`
@@ -79,6 +86,7 @@ const ChatPage = () => {
                                 marginBottom: 2,
                             }}
                         >
+                            {/* Display chat messages */}
                             {messages.map((msg, index) => (
                                 <Box
                                     key={index}
@@ -87,6 +95,8 @@ const ChatPage = () => {
                                         justifyContent: msg.user === userProfile.id ? 'flex-start' : 'flex-end',
                                     }}
                                 >
+
+                                    {/* Message bubble */}
                                     <Box
                                         sx={{
                                             maxWidth: '70%',
@@ -96,13 +106,15 @@ const ChatPage = () => {
                                             color: msg.user === userProfile.id ? 'text.primary' : 'common.white',
                                         }}
                                     >
-                                        <Typography variant="h6" sx={{ display: 'block', textAlign: 'right', marginTop: 0.5 }}>
+                                        <Typography variant="h6" sx={{ display: 'block', textAlign: msg.user === userProfile.id ? "left" : "right", marginTop: 0.5 }}>
                                             {msg.user === userProfile.id ? userProfile.username : 'You'}
                                         </Typography>
                                         <Typography variant="body1">{msg.message}</Typography>
                                     </Box>
                                 </Box>
                             ))}
+
+                            {/* Typing indicator */}
                             {typing && (
                                 <Typography
                                     variant="body2"

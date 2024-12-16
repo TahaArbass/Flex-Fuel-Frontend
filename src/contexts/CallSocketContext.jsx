@@ -2,11 +2,20 @@ import React, { createContext, useContext, useEffect, useState, useRef } from "r
 import { io } from "socket.io-client";
 import SimplePeer from "simple-peer";
 import BaseUrl from "../utils/baseUrl";
+import { useAuth } from "./AuthContext";
 
 const CallSocketContext = createContext();
-const callSocket = io(`${BaseUrl}/call`);
 
 const CallSocketProvider = ({ children }) => {
+    // Get token from context
+    const { auth } = useAuth();
+    const token = auth.token;
+
+    // Initialize socket connection
+    const callSocket = io(`${BaseUrl}/call`, {
+        query: { token: token },
+    });
+
     const [callAccepted, setCallAccepted] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
     const [stream, setStream] = useState(null);
