@@ -85,7 +85,6 @@ const ChatSocketProvider = ({ children }) => {
     const sendMessage = (recipientId, message) => {
         if (!message.trim()) return;
         const data = { recipientId, message };
-        console.log("Data: ", data);
         chatSocket.current.emit("sendMessage", data);
         setMessages((prev) => [...prev, { user: auth.user.id, message: message }]); // Add locally sent message to state
         setMessage(""); // Clear input
@@ -94,7 +93,6 @@ const ChatSocketProvider = ({ children }) => {
     // Handle typing indicator
     const handleTyping = (recipientId, isTyping) => {
         if (!chatSocket.current) return;
-
         // Clear the previous timeout if the user is typing quickly
         if (typingTimeoutRef.current) {
             clearTimeout(typingTimeoutRef.current);

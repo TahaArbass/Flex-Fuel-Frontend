@@ -63,7 +63,7 @@ const FollowersList = () => {
                     variant="outlined"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    sx={{ marginBottom: 2, width: '30%' }}
+                    sx={{ marginBottom: 2, width: '40%' }}
                 />
 
                 {/* User List */}
