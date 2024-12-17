@@ -22,12 +22,13 @@ const ChatSocketProvider = ({ children }) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [typing, setTyping] = useState(false); // Typing indicator state
-
+    const [countOnlineUsers, setCountOnlineUsers] = useState(0);
     // Ref for socket instance
     const chatSocket = useRef(null);
 
     // Typing timeout ref for debouncing
     const typingTimeoutRef = useRef(null);
+
 
     // Cleanup listeners on unmount
     const cleanUpListeners = (socketInstance) => {
@@ -38,6 +39,7 @@ const ChatSocketProvider = ({ children }) => {
         socketInstance.off("typing");
         socketInstance.off("stopTyping");
         socketInstance.off("reconnect");
+        socketInstance.off("usersOnlineResponse");
     };
 
     useEffect(() => {
@@ -77,6 +79,13 @@ const ChatSocketProvider = ({ children }) => {
             setIsConnected(false);
         });
 
+        // Listen for online users count response
+        chatSocket.current.on("usersOnlineResponse", (data) => {
+            console.log("Users online: ", data.count);
+            setCountOnlineUsers(data.count);
+        });
+
+
         // Cleanup listeners on unmount
         return () => cleanUpListeners(chatSocket.current);
     }, [chatSocket]);
@@ -109,6 +118,11 @@ const ChatSocketProvider = ({ children }) => {
         chatSocket.current.emit("join", { recipientId });
     };
 
+    // get number or count of online users
+    const getOnlineUsers = () => {
+        chatSocket.current.emit("usersOnline");
+    };
+
     // Provide the chat socket context for children components
     return (
         <SocketContext.Provider
@@ -121,6 +135,8 @@ const ChatSocketProvider = ({ children }) => {
                 sendMessage,
                 handleTyping,
                 joinChatRoom,
+                getOnlineUsers,
+                countOnlineUsers,
             }}
         >
             {children}
