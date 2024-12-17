@@ -52,7 +52,7 @@ const ChatSocketProvider = ({ children }) => {
 
         // Typing indicator
         chatSocket.current.on("typing", (user) => {
-            console.log(`${user} is typing...`);
+            // console.log(`${user} is typing...`);
             setTyping(true);
         });
 
@@ -63,25 +63,25 @@ const ChatSocketProvider = ({ children }) => {
 
         // Reconnect to socket
         chatSocket.current.on("reconnect", () => {
-            console.log("Reconnected to chat socket!");
+            // console.log("Reconnected to chat socket!");
             setIsConnected(true);
         });
 
         // On connect
         chatSocket.current.on("connect", () => {
-            console.log("Connected to chat socket!");
+            // console.log("Connected to chat socket!");
             setIsConnected(true);
         });
 
         // On disconnect
         chatSocket.current.on("disconnect", () => {
-            console.log("Disconnected from chat socket!");
+            // console.log("Disconnected from chat socket!");
             setIsConnected(false);
         });
 
         // Listen for online users count response
         chatSocket.current.on("usersOnlineResponse", (data) => {
-            console.log("Users online: ", data.count);
+            // console.log("Users online: ", data.count);
             setCountOnlineUsers(data.count);
         });
 

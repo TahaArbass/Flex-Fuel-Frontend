@@ -129,7 +129,7 @@ const MealDetail = ({ mealId }) => {
                             Ingredients:
                         </Typography>
                         <Box component="ul" sx={{ paddingLeft: 2 }}>
-                            {meal?.ingredients?.split(", ").map((ingredient, index) => (
+                            {meal?.ingredients?.split(". ").map((ingredient, index) => (
                                 <Typography key={index} component="li" variant="h6">
                                     {ingredient}
                                 </Typography>

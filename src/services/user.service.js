@@ -45,6 +45,11 @@ const signup = (username, email, password) => {
     return http.post('/users/signup', { username, email, password });
 };
 
+// count all users
+const countAllUsers = () => {
+    return http.get('/users/count');
+};
+
 const UserService = {
     getAll,
     getById,
@@ -55,6 +60,7 @@ const UserService = {
     deleteUser,
     login,
     signup,
+    countAllUsers
 };
 
 export default UserService;
